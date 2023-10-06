@@ -37,21 +37,12 @@ def split_codons(dna): #(dna: str) -> list[str] | None:
     """
     if len(dna)%3 != 0:
         return None
-    return [dna[i:(i + 3)] for i in range(0, len(dna)-2,3)]
+    return [dna.upper()[i:(i + 3)] for i in range(0, len(dna)-2,3)]
 
 
 def translate_codons(codons): #list[str]) -> list[str]:
     """Translate a list of codons (triplets) into their corresponding
     amino acid sequence.
-
-    >>> translate_codons(['TGT', 'TGC', 'TGA'])
-    ['C', 'C', '*']
-
-    The function must be able to handle both upper and lower case
-    strings.
-
-    >>> translate_codons(['tgt', 'tgc', 'tga'])
-    ['C', 'C', '*']
 
     If the `codons` list contain anything that isn't a valid codon,
     i.e. not in the CODON_MAP when translated into upper case, the
@@ -61,16 +52,14 @@ def translate_codons(codons): #list[str]) -> list[str]:
     True
 
     """
-    return [CODON_MAP[i] if i in CODON_MAP else '*' for i in codons]
+    return [CODON_MAP[i.upper()] if i.upper() in CODON_MAP else '*' for i in codons]
 
+assert translate_codons(['TGT', 'TGC', 'TGA']) == ['C', 'C', '*']
+assert translate_codons(['tgt', 'tgc', 'tga']) == ['C', 'C', '*']
 
 def translate_dna(dna: str) -> str:
     """Translate a DNA string into its corresponding amino acid string.
 
-    >>> translate_dna('TGTTGCTGA')
-    'CC*'
-    >>> translate_dna('tgttgctga')
-    'CC*'
 
     If the sequence does not have a length that is a multiple of three, of if
     any of the triplets in it are not valid codons (when in uppercase), the function
@@ -80,7 +69,11 @@ def translate_dna(dna: str) -> str:
     True
 
     """
-    codons = split_codons(dna)
-    return translate_codons(codons)
+    format_dna = dna.upper()
+    codons = split_codons(format_dna)
+    return ''.join(translate_codons(codons))
 
-print(translate_dna('TGTTGCTGA'))
+assert translate_dna('TGTTGCTGA') == 'CC*'
+assert translate_dna('tgttgctga') == 'CC*'
+
+
