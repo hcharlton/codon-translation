@@ -44,6 +44,15 @@ def translate_codons(codons): #list[str]) -> list[str]:
     """Translate a list of codons (triplets) into their corresponding
     amino acid sequence.
 
+    >>> translate_codons(['TGT', 'TGC', 'TGA'])
+    ['C', 'C', '*']
+
+    The function must be able to handle both upper and lower case
+    strings.
+
+    >>> translate_codons(['tgt', 'tgc', 'tga'])
+    ['C', 'C', '*']
+
     If the `codons` list contain anything that isn't a valid codon,
     i.e. not in the CODON_MAP when translated into upper case, the
     function should return `None`.
@@ -60,6 +69,10 @@ assert translate_codons(['tgt', 'tgc', 'tga']) == ['C', 'C', '*']
 def translate_dna(dna: str) -> str:
     """Translate a DNA string into its corresponding amino acid string.
 
+    >>> translate_dna('TGTTGCTGA')
+    'CC*'
+    >>> translate_dna('tgttgctga')
+    'CC*'
 
     If the sequence does not have a length that is a multiple of three, of if
     any of the triplets in it are not valid codons (when in uppercase), the function
